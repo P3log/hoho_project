@@ -1,6 +1,6 @@
 # README
 
-Author: P3log
+Author: P3log</br>
 Date: 25/03/2026
 
 ## 1 - Description
@@ -37,40 +37,55 @@ A DHT22 sensor is connected to a Raspberry Pi device and takes measures every t 
 ```
 An archive is generated, named *tracer.zip*
 
-If you are already on the raspberry device, go straight to step 6
-
-4. Run the transmitter. It will transmit the previously generated archive to your Raspberry Pi device through an SSH connection. Prior to this your computer **must** be connected to the Raspberry. Note that you also need to know your raspberry name and IP, that you can find on the device itself.
+4. Right before the next step you have to create a directory on the Raspberry Pi :
 ```bash
-    ./transmitter RASPBERRY_NAME RASPBERRY_IP
+    # In the Raspberry Pi
+    cd
+    mkdir th_sensor
+    cd th_sensor
+
+```
+If you do not use the *transmitter* script (or if you modify it) you can name this directory anything you would like.
+
+If you have installed the project directly on the raspberry device, go straight to step 7
+
+5. On your computer, run the transmitter. It will transmit the previously generated archive to your Raspberry Pi device through an SSH connection. Prior to this your computer **must** be connected to the Raspberry.
+```bash
+    ./transmitter RASPBERRY_USERNAME RASPBERRY_IP
+    # Enter the raspberry password when it is asked
 ```
 
-5. Connect to the Raspberry Pi device
+6. Connect to the Raspberry Pi device
 ```bash
-    ssh RASPBERRY_NAME@RASPBERRY_IP
-    # Enter your password when it is asked
+    ssh RASPBERRY_USERNAME@RASPBERRY_IP
+    # Enter the raspberry password when it is asked
 ```
-6. On the Raspberry Pi, install the pigpio library :
+
+7. On the Raspberry Pi, install the pigpio library :
 ```bash
     sudo apt update
     sudo apt install pigpio
 ```
 
-7. Decompress the archive
+8. Decompress the archive
 ```bash
     unzip tracer.zip
 ```
 
-8. Run the installer
+9. Run the installer
 ```bash
     ./installer
 ```
 The installer will build the project appropriately
 
 ## 4 - Run the program
-the executables are in /bin. You need the root privileges to access to sensor. Run :
+the executables are in `/bin`. You need the root privileges to access to sensor. Run :
 ```bash
     sudo ./manager DELAY_IN_MINUTES_BETWEEN_TWO_MEASURES
 ```
+The program runs until it is interrupted manually by the user (or until it crashes).
+
+
 ## 5 - Interesting data
 ### 5.1 - Database
 The file **measures.csv** is used as the database of this project. It is stored in `./db/measures.csv`.
