@@ -81,7 +81,7 @@ void formatContent(char* buffer, char* date, char* time, char* humidity, char* t
 }
 
 void write_to_logs(char* message){
-    char logfile[] = "../logs/hothouse.log";
+    char logfile[] = "../logs/journal.log";
     int fd = open(logfile, O_CREAT|O_APPEND|O_RDWR, 0664);
     if (fd == -1){
         perror("Unfortunately could not trace logs");
