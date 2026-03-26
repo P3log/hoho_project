@@ -1,10 +1,10 @@
-# README
+# DHT\_tracer README
 
 Author: P3log</br>
 Date: 25/03/2026
 
 ## 1 - Description
-The *hoho\_project* was designed to trace measures realised by a DHT sensor (also named AM2302) on a Raspberry Pi device that would work continuously. It was implemented in C language in order to keep it light, fast and low consumer. This project contains :
+The *DHT22\_tracer* was designed to trace measures realised by a DHT sensor (also named AM2302) on a Raspberry Pi device that would work continuously. It was implemented in C language in order to keep it light, fast and low consumer. This project contains :
 - An **assembler** script in charge to create an archive to be uploaded on the Raspberry device
 - A handmade-library compatible with the DHT sensor **and** the Raspberry Pi family. It requires the pigpio library.
 - Different packages to be contained in the previously mentioned archive
@@ -19,11 +19,11 @@ A DHT22 sensor is connected to a Raspberry Pi device and takes measures every t 
 ## 3 - Installation guide
 1. Clone the project or download it whether to your computer or straight to your Raspberry Pi device
 ```bash
-    git clone https://github.com/P3log/hoho_project.git
+    git clone https://github.com/P3log/DHT22_tracer.git
 ```
 2. Enter the project
 ```bash
-    cd hoho_project
+    cd DHT22_tracer
 ```
 2. Set *assembler*, *installer* and *transmitter* as executable files :
 ```bash
@@ -98,8 +98,3 @@ One line corresponds to one measure.
 ### 5.1 - Log file
 The log file stores data related to errors and is stored in `./logs/journal.log`
 
-## 6 - Uninstall the project
-Simply delete the whole directory where the project was installed
-```bash
-sudo rm -r hoho_project
-```
