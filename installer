@@ -7,19 +7,20 @@ mkdir include
 mkdir db
 mkdir logs
 
-echo "** Launching the hothouse installer **"
+echo "** DHT_TRACER INSTALLER **"
 echo "[+] unzipping files"
 
 target=dir
 
 # Create 3 directories
-for i in {1..3}; do
-    csv_writer=$(grep -a "csv_" $target$i.zip | wc -l)
-    dht22=$(grep -a "dht22" $target$i.zip | wc -l)
-    manager=$(grep -a "manager" $target$i.zip | wc -l)
-    if [[ "$csv_writer" -ge "1" ]]; then
-        mkdir csv_writer
-        cd csv_writer
+for i in {1..4}; do
+    writers=$(grep -a "writers" $target$i.zip | wc -l)
+    dht22=$(grep -aE "dht22[^_tracer]" $target$i.zip | wc -l)
+    dht22_tracer=$(grep -a "dht22_tracer" $target$i.zip | wc -l)
+    server=$(grep -a "server" $target$i.zip | wc -l)
+    if [[ "$writers" -ge "1" ]]; then
+        mkdir writers
+        cd writers
         unzip ../${target}${i}.zip
         cd ../
     elif [[ "$dht22" -ge "1" ]]; then
@@ -27,43 +28,54 @@ for i in {1..3}; do
         cd dht22
         unzip ../${target}${i}.zip
         cd ../
-    elif [[ "$manager" -ge "1" ]]; then
-        mkdir manager
-        cd manager
+    elif [[ "$server" -ge "1" ]]; then
+        mkdir server
+        cd server
         unzip ../${target}${i}.zip
-        mv Makefile ../
+        cd ../
+    elif [[ "$dht22_tracer" -ge "1" ]]; then
+        mkdir dht22_tracer
+        cd dht22_tracer
+        unzip ../${target}${i}.zip
         cd ../
     fi
 done
 
-echo "[+] Compiling writer"
-cd csv_writer/
-make # compile writer
-cd ../
 
 # Sort files
-directories=("csv_writer" "dht22" "manager")
+directories=("writers" "dht22" "dht22_tracer" "server")
 echo "[+] Moving files ..."
 for directory in ${directories[@]}; do
-    mv $directory/*.c src/              # .c
-    if [[ "$directory" == "csv_writer" ]]; then
-        mv $directory/*.o obj/              # .o
-        mv $directory/$directory bin/       # bin
-    fi
-    if [[ "$directory" == "dht22" ]]; then
+    if [[ "$directory" != "dht22" ]]; then
+        mv $directory/*.cpp src/            # .cpp
+        mv $directory/*.hpp include/ 2>/dev/null
+    else
+        mv $directory/*.c src/              # .c
         mv $directory/*.h include/          # .h
     fi
 done
 
-echo "[+] Compiling manager"
-make # compile manager
+# Compilation
+echo "[+] Compiling writers"
+cd writers
+make
+cd ../
+echo "[+] Compiling DHT22 tracer"
+cd dht22_tracer
+make
+cd ../
+echo "[+] Compiling server"
+cd server
+make
+cd ../
 
 echo "[+] Files & directories Cleanup"
-rm -r csv_writer
+rm -r writers
 rm -r dht22
-rm -r manager
+rm -r dht22_tracer
+rm -r server
 rm dir*
-rm Makefile
+
 
 echo "[+] Installation finished"
 echo "[+] Ready to run !"

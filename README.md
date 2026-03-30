@@ -4,9 +4,9 @@ Author: P3log</br>
 Date: 25/03/2026
 
 ## 1 - Description
-The *DHT22\_tracer* was designed to trace measures realised by a DHT sensor (also named AM2302) on a Raspberry Pi device that would work continuously. It was implemented in C language in order to keep it light, fast and low consumer. This project contains :
+The *DHT22\_tracer* was designed to trace measures realised by a DHT sensor (also named AM2302) on a Raspberry Pi device that would work continuously. It was implemented in C/C++ language in order to keep it light, fast and low consumer. This project contains :
 - An **assembler** script in charge to create an archive to be uploaded on the Raspberry device
-- A handmade-library compatible with the DHT sensor **and** the Raspberry Pi family. It requires the pigpio library.
+- A C-code-handmade-library compatible with the DHT sensor **and** the Raspberry Pi family. It requires the pigpio library.
 - Different packages to be contained in the previously mentioned archive
 - A **transmitter** script to move in an easy way data toward the Raspberry Pi.
 - An installer to ease the configuration procedure

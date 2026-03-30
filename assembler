@@ -1,6 +1,6 @@
 #!/bin/bash
 
-base=("csv_writer" "dht22" "manager")
+base=("writers" "dht22" "dht22_tracer" "server")
 
 # zip directories
 dirnb=1
