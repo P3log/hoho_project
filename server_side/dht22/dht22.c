@@ -92,7 +92,7 @@ int getMeasures(float* humidity, float* temperature) {
     gpioSetAlertFunc(DHT_PIN, NULL);
 
     /* ---------------- DEBUG ---------------- */
-    printf("edges captured: %d\n", cap.count);
+    // printf("edges captured: %d\n", cap.count);
 
     int nb = decode_bits(&cap, bits);
 

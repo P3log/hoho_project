@@ -1,18 +1,16 @@
 # !/bin/bash
 
-mkdir bin
-mkdir src
-mkdir obj
-mkdir include
-mkdir db
-mkdir logs
+structure=("bin" "src" "obj" "include" "db" "logs")
+for s in ${structure[@]}; do
+    mkdir $s
+done
 
 echo "** DHT_TRACER INSTALLER **"
 echo "[+] unzipping files"
 
 target=dir
 
-# Create 3 directories
+# Create directories
 for i in {1..4}; do
     writers=$(grep -a "writers" $target$i.zip | wc -l)
     dht22=$(grep -aE "dht22[^_tracer]" $target$i.zip | wc -l)
@@ -41,41 +39,38 @@ for i in {1..4}; do
     fi
 done
 
-
 # Sort files
 directories=("writers" "dht22" "dht22_tracer" "server")
-echo "[+] Moving files ..."
+echo "[+] Moving files"
 for directory in ${directories[@]}; do
     if [[ "$directory" != "dht22" ]]; then
-        mv $directory/*.cpp src/            # .cpp
-        mv $directory/*.hpp include/ 2>/dev/null
+        mv $directory/*.cpp src/                    # .cpp
+        mv $directory/*.hpp include/ 2>/dev/null    # .hpp
     else
-        mv $directory/*.c src/              # .c
-        mv $directory/*.h include/          # .h
+        mv $directory/*.c src/                      # .c
+        mv $directory/*.h include/                  # .h
     fi
 done
 
 # Compilation
-echo "[+] Compiling writers"
+echo "[+] Compiling writers ..."
 cd writers
 make
 cd ../
-echo "[+] Compiling DHT22 tracer"
+echo "[+] Compiling DHT22 tracer ..."
 cd dht22_tracer
 make
 cd ../
-echo "[+] Compiling server"
+echo "[+] Compiling server ..."
 cd server
 make
 cd ../
 
 echo "[+] Files & directories Cleanup"
-rm -r writers
-rm -r dht22
-rm -r dht22_tracer
-rm -r server
+for dir in ${directories[@]}; do
+    rm -r $dir
+done
 rm dir*
-
 
 echo "[+] Installation finished"
 echo "[+] Ready to run !"

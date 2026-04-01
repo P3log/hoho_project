@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Control</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/loader.css">
+</head>
+<body>
+
+<h1>Contrôle de la serre</h1>
+
+<div class="panel">
+
+    <button id="btnList" onclick="getList()">Fichiers de mesure</button>
+
+    <input type="number" id="interval" placeholder="Intervalle (min)">
+
+    <button onclick="startTracer()">Lancer capteur</button>
+
+    <button onclick="stopTracer()">Arrêter capteur</button>
+
+    <button onclick="getLogs()">Logs</button>
+
+</div>
+
+<div id="fileList"></div>
+
+<h2>Résultats</h2>
+<pre id="output"></pre>
+
+<script type="module" src="./js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+PORT=5437
+
+echo [+] "Launching client" # running background
+python3 -m http.server $PORT &
+sleep 1
+xdg-open http://localhost:$PORT
