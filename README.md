@@ -3,6 +3,8 @@
 Author: P3log</br>
 Date: 25/03/2026
 
+
+
 ## 1 - Description
 The *DHT22\_tracer* was designed to trace measures realised by a DHT sensor (also named AM2302) on a Raspberry Pi device that would work continuously. It was implemented in C/C++ language in order to keep it light, fast and low consumer. </br>
 This project contains :
@@ -23,9 +25,11 @@ A DHT22 sensor is connected to a Raspberry Pi device and takes measures every t 
 ```bash
     git clone https://github.com/P3log/DHT22_tracer.git
 ```
-2. Enter the project
+
+### 3.1 - Server
+1. Enter the project
 ```bash
-    cd DHT22_tracer
+    cd DHT22_tracer/server-side
 ```
 2. Set *assembler*, *installer* and *transmitter* as executable files :
 ```bash
@@ -80,23 +84,46 @@ If you have installed the project directly on the raspberry device, go straight 
 ```
 The installer will build the project appropriately
 
-## 4 - Run the program
-the executables are in `/bin`. You need the root privileges to access to sensor. Run :
+10. Once the process is done, a specific message is displayed in the terminal to tell so. Run the server by going in the `/bin` directory :
 ```bash
-    sudo ./manager DELAY_IN_MINUTES_BETWEEN_TWO_MEASURES
+sudo ./server
 ```
-The program runs until it is interrupted manually by the user (or until it crashes).
+The device is ready !
 
+### 3.2 - Client
+The client runs through a navigator. It was designed to be as light as possible from the standard base : html, CSS and javascript.
 
-## 5 - Interesting data
-### 5.1 - Database
-The file **measures.csv** is used as the database of this project. It is stored in `./db/measures.csv`.
-It stores in this order : 
+1. Run the client 
+```bash
+./client
 ```
-Date;Time;Humidity;Temperature
-```
-One line corresponds to one measure.
 
-### 5.1 - Log file
-The log file stores data related to errors and is stored in `./logs/journal.log`
+It will open a server through Python and open the application.
+You are ready to use the application !
 
+
+## 4 - Client interface:
+
+### 4.1 - Management of the tracer
+Located in the top right side of the screen, a few items are available :
+- **Start** : it runs the device considering an **interval** that must be defined in the field attached to this button. The interval, in **minutes**, corresponds to the delay between two measures being taken by the DHT device. When a series of measures is started, all the data are stored on a file named depending the date the first measure was made (i.e. approximatively the moment the start button was clicked on). All the measures are stored on the same file until the series of measures are stopped voluntarily.
+- **Stop** : it stops the campaign of measures. Note that this button is partially protected by a warning each time it is used, in order to prevent from a misclick.
+- Above these two buttons, an indicator visually informs the user whether the tracer is currently taking measures or not.
+
+### 4.2 - Access data
+- **Get files** : this button retrieves the databases already on the Raspberry. No file is created until the first series of measures is launched. A file can be explored during a campaign of measures without interrupting the process.
+- **Read file** : if any database is found on the raspberry it will be displayed. Clicking on the *"read"* button will display automatically its content below.
+- **Upload CSV** : it is also possible to read a local database saved on your own computer for instance. Once launched the file automatically displays the database's content
+- **Logs** : This button displays all the requests that have been addressed to the distant server until the last click on this button.
+
+### 4.3 - Data content
+3 elements are extracted from the databases each time :
+
+1. A linegraph that visually displays the evolution of temperature and humidity over the different measures of a campaign of measures.
+2. The same results displayed in an array below
+3. Basic statistics about the measures : 
+    - Number of measures
+    - Average temperature (°C)
+    - Average humidity (%)
+
+- **Download** : for any measure file read straight from the raspberry, it is possible to download the measures on your own computer.

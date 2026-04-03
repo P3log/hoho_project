@@ -4,5 +4,9 @@ PORT=17312
 
 echo [+] "Launching client" # running background
 python3 -m http.server $PORT &
+SERVER_PID=$!
+
 sleep 1
 xdg-open http://localhost:$PORT
+
+kill -9 $SERVER_PID
