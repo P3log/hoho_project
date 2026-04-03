@@ -15,7 +15,7 @@ using namespace std;
 
 // ---------------- UTILS ----------------
 void usage(const string& program) {
-    cout << "Usage:\n\t" << program << " DELAY_IN_MINUTES\n";
+    cout << "Usage:\n\t" << program << " DELAY_IN_MINUTES" << endl;;
 }
 
 
@@ -23,6 +23,19 @@ string float_to_string(float value) {
     ostringstream oss;
     oss << fixed << setprecision(2) << value;
     return oss.str();
+}
+
+
+pair<string, string> getDateTime() {
+    time_t now = time(nullptr);
+    tm *t = localtime(&now);
+
+    stringstream date, time;
+
+    date << put_time(t, "%Y-%m-%d");
+    time << put_time(t, "%H%M%S");
+
+    return {date.str(), time.str()};
 }
 
 
@@ -34,10 +47,15 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    int delay = stoi(argv[1]); // plus sûr que atoi
+    int delay = stoi(argv[1]);
 
     float humidity = 0.0f;
     float temperature = 0.0f;
+
+    // Create a destination file depending on its datetime : <measure_YY-MM-DD_hhmmss>
+    auto [date, time] = getDateTime();
+    ostringstream filename;
+    filename << "measure_" << date << "_" << time;
 
     const string csvProgram = "./writers";
 
@@ -61,14 +79,16 @@ int main(int argc, char* argv[]) {
         }
         else if (pid == 0) {
             // Child process
+            // parameters must be const char*
             execlp(csvProgram.c_str(),
                    "writers",
                    str_humidity.c_str(),
                    str_temperature.c_str(),
+                   filename.str().c_str(),
                    NULL);
 
             perror("Exec failure");
-            _exit(EXIT_FAILURE); // important en cas d'échec
+            _exit(EXIT_FAILURE); // important if failure
         }
 
         // Parent process

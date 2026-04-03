@@ -1,7 +1,7 @@
 .loader {
     width: 20px;
     height: 20px;
-    border: 5px solid #0366fc;
+    border: 5px solid white;    /* #0366fc; */
     border-bottom-color: transparent;
     border-radius: 50%;
     display: inline-block;

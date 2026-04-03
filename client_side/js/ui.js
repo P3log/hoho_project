@@ -32,22 +32,29 @@ export function displayFileButtons(files, onClick) {
         container.textContent = "Aucun fichier disponible";
         return;
     }
-
+    const ul = document.createElement("ul");
     files.forEach(file => {
-        const btn = document.createElement("button");
+        const li = document.createElement("li");
+        const filename = document.createElement("span");
+        filename.innerText = file;
 
-        btn.textContent = file;
+        const btn = document.createElement("button");
+        btn.textContent = "Lire";
         btn.style.display = "block";
         btn.style.margin = "5px 0";
         btn.style.cursor = "pointer";
-
+        
         btn.addEventListener("click", function () {
             withLoading(btn, () => onClick(file));
         });
         btn.classList.add("btn", "btn-file");
+
+        li.appendChild(filename);
+        li.appendChild(btn);
+        ul.appendChild(li);
         
-        container.appendChild(btn);
     });
+    container.append(ul);
 }
 
 
@@ -112,26 +119,44 @@ export function downloadData(data, filename = "mesures.txt") {
 
 export function displayTable(parsed) {
     const output = document.getElementById("output");
+    output.innerHTML = "";
     const { headers, data } = parsed
-    let html = "<table id=\"dataTable\"><thead><tr>";
+    const table = document.createElement("table");
+    table.setAttribute("id", "dataTable");
+    const thead = document.createElement("thead");
+    const trHead  = document.createElement("tr")
+
     headers.forEach(e => {
-        html += `<th>${e}</th>`;
+        const th = document.createElement("th");
+        th.append(e);
+        trHead.appendChild(th);
     });
-    html += `</tr></thead><tbody>`;
+    thead.appendChild(trHead);
+    table.appendChild(thead);
 
+    const tbody = document.createElement("tbody");
+    
     data.forEach((row, index) => {
-        html += `
-            <tr data-index="${index}">
-                <td>${row.formattedDate}</td>
-                <td>${row.time}</td>
-                <td>${row.humidity}</td>
-                <td>${row.temperature}</td>
-            </tr>
-        `;
-    });
+        const tr = document.createElement("tr");
+        tr.setAttribute("data-index", index);
+        const td1 = document.createElement("td");
+        const td2 = document.createElement("td");
+        const td3 = document.createElement("td");
+        const td4 = document.createElement("td");
 
-    html += "</tbody></table>";
-    output.innerHTML = html;
+        td1.append(row.formattedDate)
+        td2.append(row.time)
+        td3.append(row.humidity)
+        td4.append(row.temperature)
+
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+        tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    output.append(table);
 }
 
 
@@ -139,5 +164,66 @@ export function addDownloadButton(data, file) {
     const btn = document.createElement("button");
     btn.textContent = "Télécharger";
     btn.onclick = () => downloadData(data, file);
+    btn.classList.add("btn", "floating-btn");
+    btn.setAttribute("id", "floatingBtn");
     document.getElementById("output").appendChild(btn);
+}
+
+
+export function displayStats(parsed) {
+    const { header, data, stats } = parsed;
+    const statistics = document.getElementById("results");
+    
+    const myDiv = document.createElement("div");
+    myDiv.setAttribute("id", "stats");
+    const table = document.createElement("table");
+    table.classList.add("fit");
+    table.setAttribute("id", "dataTable");
+    const tr1 = document.createElement("tr");
+    const th1 = document.createElement("th");
+    const td1 = document.createElement("td");
+    th1.append("Nombre de mesures: ");
+    td1.append(stats.nbMeasures);
+    tr1.appendChild(th1);
+    tr1.appendChild(td1);
+    table.appendChild(tr1);
+
+    const tr2 = document.createElement("tr");
+    const th2 = document.createElement("th");
+    const td2 = document.createElement("td");
+    th2.append("Taux moyen d'humidité: ");
+    td2.append(`${stats.avgHumidity.toFixed(2)} %`);
+    tr2.appendChild(th2);
+    tr2.appendChild(td2);
+    table.appendChild(tr2);
+
+    const tr3 = document.createElement("tr");
+    const th3 = document.createElement("th");
+    const td3 = document.createElement("td");
+    th3.append("Température moyenne");
+    td3.append(`${stats.avgTemperature.toFixed(2)} °C`);
+    tr3.appendChild(th3);
+    tr3.appendChild(td3);
+    table.appendChild(tr3);
+
+    myDiv.appendChild(table);
+    statistics.appendChild(myDiv);
+
+}
+
+export function clearStats(){
+    const stats = document.getElementById("stats");
+    if (stats) {
+        stats.remove();
+    }
+}
+
+export function resetSelectedFile(){
+    const title = document.getElementById("selected-file");
+    title.innerText = "";
+}
+
+export function displaySelectedFile (filename){
+    const title = document.getElementById("selected-file");
+    title.innerText = filename;
 }

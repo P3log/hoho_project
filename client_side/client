@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PORT=5437
+PORT=17312
 
 echo [+] "Launching client" # running background
 python3 -m http.server $PORT &

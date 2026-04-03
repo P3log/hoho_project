@@ -74,8 +74,9 @@ private:
 // ---------------- MAIN ----------------
 int main(int argc, char* argv[]) {
 
-    if (argc != 3) {
-        cout << "Usage: " << argv[0] << " <humidity> <temperature>\n";
+    if (argc != 4) {
+        cout << "Usage: " << argv[0] << " <humidity> <temperature> <file name>" << endl;
+        cout << "\tProvide the file name with no extension format" << endl;
         return EXIT_FAILURE;
     }
 
@@ -84,7 +85,9 @@ int main(int argc, char* argv[]) {
 
     string log_dest = LOG_FILE;
     Logger logger(log_dest);
-    CsvWriter writer(DB_FILE, logger);
+    ostringstream measure_file;
+    measure_file << "../db/" << argv[3] << ".csv";
+    CsvWriter writer(measure_file.str(), logger);
 
     writer.write(humidity, temperature);
 

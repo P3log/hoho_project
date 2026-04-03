@@ -1,21 +1,79 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0 auto;     /* horizontally centered */
-    width: 80vw;        /* max 1/2 screen width */
+    width: 90vw;        /* max 1/2 screen width */
+    background-color: #10182b;
+    color: white;
+    font-size: small;
 }
 
-.header-container {
-    width: 50%;
+h1, h2 {
+    color: white;
 }
 
-@media (max-width: 650px) {
-    .header-container {
-        width: 100%;
-    }
+.console {
+    width: 100%;
+    border-width: 1px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+.data-content {
+    background-color: #1c2739;
+    border-radius: 15px;
+    border-style: solid;
+    border-color: #334155;
+    color: white;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+li {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .panel {
     margin-bottom: 20px;
+}
+
+.panel.row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    padding: 10px 20px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.line {
+    display: flex;
+    justify-content: flex-start;
+    align-items: top;
+    gap: 20px;
+}
+
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.spacer {
+    flex: 1;
 }
 
 button {
@@ -29,24 +87,34 @@ input {
 }
 
 pre {
-    background: #f4f4f4;
+    display: block;
     padding: 10px;
     border: 1px solid #ccc;
-    max-height: 400px;
+    max-height: 800px;
     overflow: auto;
 }
 
 #output.error {
-    color: #911e16;
+    color: red;
 }
 
 #dataTable {
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     width: 50%;
+    border: 1px solid #334155;
+    border-width: 1px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+#dataTable th {
+    color: #60a5fa;
 }
 
 #dataTable td, #dataTable th {
-    border: 1px solid #ccc;
+    border: 1px solid #334155;
+    border-width: 1px;
     padding: 6px;
 }
 
@@ -66,34 +134,13 @@ pre {
     overflow: hidden;
     max-height: 0;
     transition: max-height 0.3s ease;
+    background-color: white;
+    border-radius: 15px;
 }
 
 #chartContainer.expanded {
     max-height: 90%; /*ajust if needed*/
 }
-
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.row {
-    display: flex;
-    align-items: center;
-}
-
-.spacer {
-    flex: 1;
-}
-
 
 .input-small {
     width: 70px;
@@ -108,11 +155,12 @@ pre {
     cursor: pointer;
     font-weight: bold;
     transition: all 0.2s ease;
-    background-color: #e9e9ed;  /* default background color */
+    background-color: #2563eb;  /* default background color */
+    color: white;
 }
 
 .btn-start {
-    background-color: #007bff;
+    background-color: #eab308;
     color: white;
 }
 
@@ -129,6 +177,7 @@ pre {
 .file-upload {
     position: relative;
     overflow: hidden;
+    font-size: small;
 }
 
 .file-upload input {
@@ -147,4 +196,63 @@ pre {
 
 .btn:active {
     transform: scale(0.97);
+}
+
+/* OUTPUT div : download button */
+.output-wrapper {
+    position: relative;   /* reference for the button */
+    width: fit-content;
+}
+
+#output {
+    max-height: 400px;
+    padding-right: 200px;
+    white-space: pre; /* IMPORTANT */
+    overflow: auto;
+}
+
+.floating-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+.output-wrapper,
+#stats {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+#results {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: nowrap; /* important */
+}
+
+.fit {
+    margin-top : 10px;
+}
+
+.panel-header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+#side-panel {
+    display: flexbox;
+}
+
+.unknown-status {
+    color: #7d8ba0;
+}
+
+.enabled-status {
+    color: lime;
+}
+
+.disabled-status {
+    color: red;
 }

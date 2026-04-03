@@ -74,7 +74,7 @@ string list_files() {
 
     } catch (...) {
         logger.log("ERROR: Could not open directory after command to list files");
-        return "{\"error\":\"cannot open directory\"}";
+        return "{\"error\":\"Cannot access directory\"}";
     }
 }
 
@@ -102,7 +102,7 @@ string get_file(const string &filename) {
     
         if (p.string().find(fs::canonical(DB_DIRECTORY).string()) != 0) {
             logger.log("ERROR: Invalid path to reach the database");
-            return "{\"error\":\"invalid path\"}";
+            return "{\"error\":\"Invalid path\"}";
         }
     
         string path = string(DB_DIRECTORY) + "/" + filename;
@@ -111,7 +111,7 @@ string get_file(const string &filename) {
         if (!file) {
             error_log << "ERROR: Could not find the file " << filename + "]";
             logger.log(error_log.str());
-            return "{\"error\":\"file not found\"}";
+            return "{\"error\":\"File not found\"}";
         }
     
         string content((istreambuf_iterator<char>(file)),
@@ -122,7 +122,7 @@ string get_file(const string &filename) {
     } catch (...) {
         error_log << "ERROR: Filesystem error when trying to reach the file " << filename;
         logger.log(error_log.str());
-        return "{\"error\":\"filesystem error\"}";
+        return "{\"error\":\"Filesystem error\"}";
     }
 }
 
@@ -146,7 +146,7 @@ string getlogs() {
 
     } catch (...) {
         logger.log("ERROR: Filesystem error when trying to reach the log file");
-        return "{\"error\":\"filesystem error\"}";
+        return "{\"error\":\"Filesystem error\"}";
     }
 }
 
@@ -228,13 +228,13 @@ string start_tracer(string interval) {
 
     if (tracer_pid > 0 && is_process_alive(tracer_pid)) {
         logger.log("ERROR: Tracer is already running");
-        return "{\"error\":\"already running\"}";
+        return "{\"status\":\"Tracer is already running\"}";
     }
 
     pid_t pid = fork();
     if (pid == -1) {
         logger.log("ERROR: Fork failure");
-        return "{\"error\":\"fork failed\"}";
+        return "{\"error\":\"Fork failed\"}";
     }
     if (pid == 0) {
         execl("./dht22_tracer", "dht22_tracer", interval.c_str(), NULL);
@@ -254,14 +254,14 @@ string stop_tracer() {
     lock_guard<mutex> lock(tracer_mutex);
 
     if (tracer_pid == -1) {
-        return "{\"error\":\"not running\"}";
+        return "{\"status\":\"Not running\"}";
     }
     if (kill(tracer_pid, SIGTERM) != 0) {
-        return "{\"error\":\"kill failed\"}";
+        return "{\"error\":\"Kill failed\"}";
     }
 
     tracer_pid = -1;
-    return "{\"status\":\"stopped\"}";
+    return "{\"status\":\"Stopped\"}";
 }
 
 
@@ -312,7 +312,7 @@ void handle_client(int client_sock) {
     Command cmd = get_command(req.command);
     
     string response_body;
-    // do not trace calls to logs
+    // Do not trace the calls for logs
     switch (cmd) {
         case CMD_GETLIST:
             logger.log(req_log.str());
@@ -323,7 +323,7 @@ void handle_client(int client_sock) {
             logger.log(req_log.str());
             if (req.value.empty()) {
                 logger.log("ERROR: missing filename in the get file comment");
-                response_body = "{\"error\":\"missing filename\"}";
+                response_body = "{\"error\":\"Missing filename\"}";
             } else {
                 response_body = get_file(req.value);
             }
@@ -334,7 +334,7 @@ void handle_client(int client_sock) {
             logger.log(req_log.str());
             if (!is_valid_interval(req.value)) {
                 logger.log("ERROR: invalid interval");
-                response_body = "{\"error\":\"invalid interval\"}";
+                response_body = "{\"error\":\"Invalid interval\"}";
             } else {
                 response_body = start_tracer(req.value);
             }
@@ -352,7 +352,7 @@ void handle_client(int client_sock) {
         default: // CMD_INVALID
             logger.log(req_log.str());
             logger.log("ERROR: invalid command");
-            response_body = "{\"error\":\"invalid command\"}";
+            response_body = "{\"error\":\"Invalid command\"}";
             break;
 
     }

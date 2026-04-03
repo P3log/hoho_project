@@ -3,7 +3,7 @@ let chartInstance = null;
 export function displayChart(data) {
     const ctx = document.getElementById("chart").getContext("2d");
 
-    const labels = data.map(d => `${d.formattedDate} ${d.time}`);
+    // const labels = data.map(d => `${d.formattedDate} ${d.time}`);
 
     const humidityData = data.map(d => ({
         x:  d.timestamp,
@@ -21,12 +21,14 @@ export function displayChart(data) {
                 {
                     label: "Température",
                     data: temperatureData,
-                    yAxisID: "y1"
+                    yAxisID: "y1",
+                    borderColor: "#ff6d8c"
                 },
                 {
                     label: "Humidité",
                     data: humidityData,
-                    yAxisID: "y2"
+                    yAxisID: "y2",
+                    borderColor: "#36a2eb"
                 }
             ]
         },
@@ -40,7 +42,12 @@ export function displayChart(data) {
                 x: {
                     type: "time",
                     time: {
-                        unit: "minute" // or "hour"
+                        unit: "minute", // or "hour"
+                        displayFormats: {
+                            minute: "HH:mm",
+                            hour: "HH:mm"
+                        },
+                    tooltipFormat: "HH:mm"
                     },
                     title: {
                         display: true,

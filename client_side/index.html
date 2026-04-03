@@ -7,30 +7,30 @@
     <link rel="stylesheet" href="/css/loader.css">
 </head>
 <body>
-<div class="header-container">
+<div class="console data-content">
     <div class="header">
         <div class="title">
             <h1>Serre</h1>
         </div>
-    
-        <div class="controls">
-            <input type="number" id="interval" placeholder="min" class="input-small">
-    
-            <button class="btn btn-start" onclick="startTracer()">Lancer</button>
-            <button class="btn btn-stop" onclick="stopTracer()">Arrêter</button>
+        
+        <div id="side-panel">
+            <div id="status-txt" class="unknown-status">&nbsp;&nbsp;Statut : inconnu</div>
+            <div class="controls">
+                <input type="number" id="interval" placeholder="min" class="input-small">
+        
+                <button class="btn btn-start" onclick="startTracer()">Lancer</button>
+                <button id="btnStop" class="btn btn-stop">Arrêter</button>
+            </div>
         </div>
     </div>
-    
     <div class="panel row">
-        <button id="btnList" class="btn" onclick="getList()">Fichiers de mesure</button>
-    
-        <div class="spacer"></div>
-    
+        <button id="btnList" class="btn">Fichiers de mesure</button>
+
         <label class="btn file-upload">
             Charger CSV
             <input type="file" id="fileInput" accept=".csv">
         </label>
-        
+
         <button class="btn" onclick="getLogs()">Logs</button>
     </div>
 </div>
@@ -40,12 +40,20 @@
 
 <h2>Données</h2>
 <div class="panel">
-    <button id="toggleChartBtn">Graphique</button>
+    <div class="panel-header">
+        <button class="btn" id="toggleChartBtn">Afficher le graphique</button>
+        <div id="selected-file"></div>
+    </div>
     <div id="chartContainer" class="collapsed">
         <canvas id="chart"></canvas>
     </div>
 </div>
-<pre id="output"></pre>
+<div id="results">
+    <div class="output-wrapper">
+        <pre id="output" class="data-content"></pre>
+    </div>
+    <!-- div here -->
+</div>
 
 <script type="module" src="./js/app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
